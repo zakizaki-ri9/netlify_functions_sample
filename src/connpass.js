@@ -9,7 +9,7 @@ import axios from 'axios'
 exports.handler = async (event, context, callback) => {
   // パラメータ出力
   let body = event.body
-  console.log(JSON.stringify(body))
+  console.log(body)
   console.log(body.event_id)
 
   // パラメータで渡された分のイベント情報を取得
