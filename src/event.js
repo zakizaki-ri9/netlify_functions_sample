@@ -2,7 +2,7 @@ import {
   WebClient
 } from '@slack/client'
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
 
   // Slackから通知された情報を出力
   const body = JSON.parse(event.body)
