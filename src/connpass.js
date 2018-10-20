@@ -1,8 +1,10 @@
 exports.handler = function (event, context, callback) {
 
+  console.log("start");
+
   let responce = {};
 
-  console.log(event.body);
+  console.log(JSON.stringify(event, null, 2));
 
   callback(null, {
     statusCode: 200,
@@ -11,4 +13,6 @@ exports.handler = function (event, context, callback) {
     },
     body: JSON.stringify(responce)
   });
+
+  console.log("end");
 }
