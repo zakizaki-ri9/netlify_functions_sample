@@ -13,16 +13,18 @@ exports.handler = async (event, context, callback) => {
   console.log(body)
 
   // パラメータで渡された分のイベント情報を取得
-  let result = []
+  let result = {
+    "result": []
+  }
   if (body.event_id && body.event_id.length > 0) {
     console.log('[PRD] searchExec')
     for (let i = 0; i < body.event_id.length; i++) {
-      result.push(await eventInfo(body.event_id[i]))
+      result.result.push(await eventInfo(body.event_id[i]))
     }
   } else {
     // テスト用
     console.log('[TEST] searchExec')
-    result.push(await eventInfo(103631))
+    result.result.push(await eventInfo(103631))
   }
 
   callback(null, {
