@@ -58,7 +58,7 @@ exports.handler = async (event, context, callback) => {
    **/
   async function eventInfo(idArray) {
     // URL生成
-    let connpassUrl = 'https://connpass.com/api/v1/event/?event_id=' + idArray.join(',')
+    let connpassUrl = 'https://connpass.com/api/v1/event/?event_id=' + (idArray.length > 1 ? idArray.join(',') : idArray[0].toString())
     console.log('url: ' + connpassUrl)
 
     // connpassイベントサーチAPIを実行
