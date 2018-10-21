@@ -1,65 +1,83 @@
 import axios from 'axios'
 
 /**
+ * connpassのイベント情報を返却する処理
+ * この処理がnetlify functionとしてデプロイされる
+ * 
  * @param  {object} event ヘッダーやパラメータ
  * @param  {object} context
  * @param  {method} callback 呼び出し元に返却する関数
  * @returns {object} 
- */
+ **/
 exports.handler = async (event, context, callback) => {
 
-  // パラメータ取得
-  let body = JSON.parse(event.body)
-  console.log(body)
+  try {
+    // パラメータ取得
+    let body = JSON.parse(event.body)
+    console.log(body)
 
-  // パラメータで渡された分のイベント情報を取得
-  let result = {
-    "result": []
-  }
-  if (body.event_id && body.event_id.length > 0) {
-    console.log('[PRD] searchExec')
-    for (let i = 0; i < body.event_id.length; i++) {
-      result.result.push(await eventInfo(body.event_id[i]))
+    // パラメータで渡された分のイベント情報を取得
+    let returnValue = {
+      "result": []
     }
-  } else {
-    // テスト用
-    console.log('[TEST] searchExec')
-    result.result.push(await eventInfo(103631))
+
+    // connpassの情報を取得
+    if (body.event_id && body.event_id.length > 0) {
+      console.log('[PRD] searchExec')
+      returnValue.result = await eventInfo(body.event_id)
+    } else {
+      // テスト用
+      console.log('[TEST] searchExec')
+      returnValue.result = await eventInfo(103631)
+    }
+
+    // 送信元へコールバック
+    callback(null, {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(returnValue)
+    })
+  } catch (e) {
+    console.error(e)
+    callback(null, {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: "please try"
+    })
   }
 
-  callback(null, {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(result)
-  })
-
-  async function eventInfo(id) {
-    // パラメータのイベントID
-    console.log('id: ' + id.toString())
-
+  /**
+   * connpassイベントサーチAPIを実行、必要な情報を返却する処理
+   * 
+   * @param  {Array<int>} idArray イベントIDの配列
+   * @returns {object} 
+   **/
+  async function eventInfo(idArray) {
     // URL生成
-    let connpassUrl =
-      'https://connpass.com/api/v1/event/?event_id=' + id.toString()
+    let connpassUrl = 'https://connpass.com/api/v1/event/?event_id=' + idArray.join(',')
     console.log('url: ' + connpassUrl)
 
     // connpassイベントサーチAPIを実行
     let res = await axios.get(connpassUrl)
     console.log('res.data: ' + JSON.stringify(res.data))
 
-    // 必要なオブジェクトのみ取得
-    let result = {}
+    // 取得できたイベントの必要な情報のみを取得
+    let result = []
     if (res.data.events && res.data.events.length > 0) {
-      let event = res.data.events[0]
-      result = {
-        "event_url": event.event_url,
-        "title": event.title,
-        "address": event.address,
-        "place": event.place,
-        "limit": event.limit,
-        "accepted": event.accepted
-      }
+      res.data.events.forEach(function (event) {
+        result.push({
+          "event_url": event.event_url,
+          "title": event.title,
+          "address": event.address,
+          "place": event.place,
+          "limit": event.limit,
+          "accepted": event.accepted
+        })
+      })
     }
     return result
   }
