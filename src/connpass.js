@@ -28,7 +28,7 @@ exports.handler = async (event, context, callback) => {
     } else {
       // テスト用
       console.log('[TEST] searchExec')
-      returnValue.result = await eventInfo(103631)
+      returnValue.result = await eventInfo([103631])
     }
 
     // 送信元へコールバック
