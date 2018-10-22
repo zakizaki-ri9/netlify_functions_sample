@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 
 /**
  * connpassのイベント情報を返却する処理
@@ -75,7 +76,11 @@ exports.handler = async (event, context, callback) => {
           "address": event.address,
           "place": event.place,
           "limit": event.limit,
-          "accepted": event.accepted
+          "accepted": event.accepted,
+          "started_date_at": moment(event.started_at).format("YYYY-MM-DD"),
+          "started_time_at": moment(event.started_at).format("hh:mm:ss"),
+          "ended_date_at": moment(event.ended_at).format("YYYY-MM-DD"),
+          "ended_time_at": moment(event.ended_at).format("hh:mm:ss")
         })
       })
     }
