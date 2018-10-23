@@ -66,10 +66,19 @@ exports.handler = async (event, context, callback) => {
     let res = await axios.get(connpassUrl)
     console.log('res.data: ' + JSON.stringify(res.data))
 
+    // 曜日出力用にlang:jaを登録
+    //  参考URL: http://blog.asial.co.jp/1158
+    moment.lang('ja', {
+      weekdaysShort: ["日", "月", "火", "水", "木", "金", "土"]
+    })
+
     // 取得できたイベントの必要な情報のみを取得
     let result = []
     if (res.data.events && res.data.events.length > 0) {
       res.data.events.forEach(function (event) {
+        let started_at = moment(event.started_at)
+        let ended_at = moment(event.ended_at)
+
         result.push({
           "event_url": event.event_url,
           "title": event.title,
@@ -77,10 +86,12 @@ exports.handler = async (event, context, callback) => {
           "place": event.place,
           "limit": event.limit,
           "accepted": event.accepted,
-          "started_date_at": moment(event.started_at).format("YYYY/MM/DD"),
-          "started_time_at": moment(event.started_at).format("hh:mm"),
-          "ended_date_at": moment(event.ended_at).format("YYYY/MM/DD"),
-          "ended_time_at": moment(event.ended_at).format("hh:mm")
+          "started_date_at": started_at.format("YYYY/MM/DD"),
+          "started_weekday_at": started_at.format("(ddd)"),
+          "started_time_at": started_at.format("HH:mm"),
+          "ended_date_at": ended_at.format("YYYY/MM/DD"),
+          "ended_weekday_at": ended_at.format("(ddd)"),
+          "ended_time_at": ended_at.format("HH:mm")
         })
       })
     }
