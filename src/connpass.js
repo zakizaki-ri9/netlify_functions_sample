@@ -89,9 +89,11 @@ exports.handler = async (event, context, callback) => {
           "started_date": started_at.format("YYYY/MM/DD"),
           "started_weekday": started_at.format("(ddd)"),
           "started_time": started_at.format("HH:mm"),
+          "started_time_2": started_at.format("hh:mm"),
           "ended_date": ended_at.format("YYYY/MM/DD"),
           "ended_weekday": ended_at.format("(ddd)"),
-          "ended_time": ended_at.format("HH:mm")
+          "ended_time": ended_at.format("HH:mm"),
+          "ended_time_2": ended_at.format("hh:mm")
         })
       })
     }
