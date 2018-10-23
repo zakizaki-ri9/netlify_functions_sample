@@ -77,10 +77,10 @@ exports.handler = async (event, context, callback) => {
           "place": event.place,
           "limit": event.limit,
           "accepted": event.accepted,
-          "started_date_at": moment(event.started_at).format("YYYY-MM-DD"),
-          "started_time_at": moment(event.started_at).format("hh:mm:ss"),
-          "ended_date_at": moment(event.ended_at).format("YYYY-MM-DD"),
-          "ended_time_at": moment(event.ended_at).format("hh:mm:ss")
+          "started_date_at": moment(event.started_at).format("YYYY/MM/DD"),
+          "started_time_at": moment(event.started_at).format("hh:mm"),
+          "ended_date_at": moment(event.ended_at).format("YYYY/MM/DD"),
+          "ended_time_at": moment(event.ended_at).format("hh:mm")
         })
       })
     }
