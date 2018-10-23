@@ -86,12 +86,12 @@ exports.handler = async (event, context, callback) => {
           "place": event.place,
           "limit": event.limit,
           "accepted": event.accepted,
-          "started_date_at": started_at.format("YYYY/MM/DD"),
-          "started_weekday_at": started_at.format("(ddd)"),
-          "started_time_at": started_at.format("HH:mm"),
-          "ended_date_at": ended_at.format("YYYY/MM/DD"),
-          "ended_weekday_at": ended_at.format("(ddd)"),
-          "ended_time_at": ended_at.format("HH:mm")
+          "started_date": started_at.format("YYYY/MM/DD"),
+          "started_weekday": started_at.format("(ddd)"),
+          "started_time": started_at.format("HH:mm"),
+          "ended_date": ended_at.format("YYYY/MM/DD"),
+          "ended_weekday": ended_at.format("(ddd)"),
+          "ended_time": ended_at.format("HH:mm")
         })
       })
     }
