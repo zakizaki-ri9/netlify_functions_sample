@@ -29,7 +29,7 @@ exports.handler = async (event, context, callback) => {
     } else {
       // テスト用
       console.log('[TEST] searchExec')
-      returnValue.result = await eventInfo([103631])
+      returnValue.result = await eventInfo([105685])
     }
 
     // 送信元へコールバック
@@ -76,8 +76,8 @@ exports.handler = async (event, context, callback) => {
     let result = []
     if (res.data.events && res.data.events.length > 0) {
       res.data.events.forEach(function (event) {
-        let started_at = moment(event.started_at)
-        let ended_at = moment(event.ended_at)
+        let started_at = moment(event.started_at).utcOffset("+0900")
+        let ended_at = moment(event.ended_at).utcOffset("+0900")
 
         result.push({
           "event_url": event.event_url,
@@ -89,11 +89,9 @@ exports.handler = async (event, context, callback) => {
           "started_date": started_at.format("YYYY/MM/DD"),
           "started_weekday": started_at.format("(ddd)"),
           "started_time": started_at.format("HH:mm"),
-          "started_time_2": started_at.format("hh:mm"),
           "ended_date": ended_at.format("YYYY/MM/DD"),
           "ended_weekday": ended_at.format("(ddd)"),
-          "ended_time": ended_at.format("HH:mm"),
-          "ended_time_2": ended_at.format("hh:mm")
+          "ended_time": ended_at.format("HH:mm")
         })
       })
     }
