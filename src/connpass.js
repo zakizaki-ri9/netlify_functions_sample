@@ -85,7 +85,7 @@ exports.handler = async (event, context, callback) => {
           "address": event.address,
           "place": event.place,
           "limit": event.limit,
-          "accepted": event.accepted,
+          "accepted": event.accepted + event.waiting,
           "started_date": started_at.format("YYYY/MM/DD"),
           "started_weekday": started_at.format("(ddd)"),
           "started_time": started_at.format("HH:mm"),
